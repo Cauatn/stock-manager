@@ -1,5 +1,4 @@
 import {
-  Tag,
   Users,
   Settings,
   Bookmark,
@@ -7,6 +6,7 @@ import {
   LayoutGrid,
   LucideIcon,
   Package,
+  Truck,
 } from "lucide-react";
 
 type Submenu = {
@@ -53,9 +53,16 @@ export function getMenuList(pathname: string): Group[] {
           submenus: [],
         },
         {
-          href: "/categories",
+          href: "/stock/entry",
+          label: "Dar entrada",
+          active: pathname.includes("/stock/entry"),
+          icon: Truck,
+          submenus: [],
+        },
+        {
+          href: "/stock/newProduct",
           label: "Adicionar novo produto",
-          active: pathname.includes("/categories"),
+          active: pathname.includes("/stock/newProduct"),
           icon: Bookmark,
           submenus: [],
         },

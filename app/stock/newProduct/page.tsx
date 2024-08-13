@@ -12,19 +12,9 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { PlusCircle } from "lucide-react";
-import { ChangeEvent } from "react";
+import { applyMask } from "@/hooks/money-mask";
 
 export default function NewProduct() {
-  const applyMask = (event: ChangeEvent<HTMLInputElement>) => {
-    let value = event.target.value.replace(/\D/g, "");
-    value = (Number(value) / 100).toFixed(2) + "";
-    value = value.replace(".", ",");
-    value = value.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
-    event.target.value = "R$ " + value;
-
-    console.log(value);
-  };
-
   return (
     <div className="z-10 w-full max-w-7xl text-sm lg:flex flex-col gap-10 py-10 px-10">
       <h1 className="text-4xl">Adição de novo produto</h1>

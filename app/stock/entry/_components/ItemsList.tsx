@@ -33,7 +33,7 @@ export default function ItemsList({ items }: ItemListProps) {
             <TableCell>{item.quantity}</TableCell>
             <TableCell>R$ {item.unitPrice}</TableCell>
             <TableCell>
-              R$ {item.quantity * parseFloat(item.unitPrice.toFixed(2))}
+              {`R$ ${(item.quantity * item.unitPrice).toFixed(2)}`}
             </TableCell>
           </TableRow>
         ))}

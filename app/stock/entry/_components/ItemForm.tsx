@@ -30,7 +30,6 @@ export default function ItemForm({
             defaultValue={newItem.date}
             onChange={(e) => {
               date = e.target.value;
-              console.log(e.target.value);
               handleInputChange(e);
             }}
             required
@@ -79,6 +78,7 @@ export default function ItemForm({
             id="quantity"
             name="quantity"
             type="number"
+            min={0}
             value={newItem.quantity}
             placeholder="0"
             onChange={handleInputChange}
@@ -87,7 +87,7 @@ export default function ItemForm({
         </div>
         <div>
           <Label htmlFor="unitPrice">Valor Unitário</Label>
-          <div className="inline-flex space-x-1 items-center">
+          <div className="inline-flex space-x-1 items-center w-full">
             <span className="font-medium text-xl">R$</span>
             <Input
               id="unitPrice"
@@ -106,7 +106,11 @@ export default function ItemForm({
         <Input
           id="totalPrice"
           name="totalPrice"
-          value={`R$ ${newItem.quantity * newItem.unitPrice}`}
+          value={
+            isNaN(newItem.quantity) || isNaN(newItem.unitPrice)
+              ? "R$ 0,00"
+              : `R$ ${(newItem.quantity * newItem.unitPrice).toFixed(2)}`
+          }
           readOnly
         />
       </div>

@@ -35,28 +35,35 @@ export default function Products() {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
-    setNewItem((prevItem) => ({
-      ...prevItem,
-      [name]:
-        name === "unitPrice" || name === "quantity" ? parseFloat(value) : value,
-    }));
+    const parsedValue = parseFloat(value);
+
+    if (isNaN(parsedValue)) {
+      setNewItem((prevItem) => ({
+        ...prevItem,
+        [name]: value,
+      }));
+    } else {
+      setNewItem((prevItem) => ({
+        ...prevItem,
+        [name]: name === "unitPrice" ? parsedValue : value,
+      }));
+    }
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    setItems([
-      ...items,
-      {
-        date: newItem.date,
-        name: newItem.name,
-        id: newItem.id,
-        supplier: newItem.supplier,
-        quantity: newItem.quantity,
-        unitPrice: newItem.unitPrice,
-        totalPrice: newItem.quantity * newItem.unitPrice,
-      },
-    ]);
+    const item = {
+      date: newItem.date,
+      name: newItem.name,
+      id: newItem.id,
+      supplier: newItem.supplier,
+      quantity: newItem.quantity,
+      unitPrice: newItem.unitPrice,
+      totalPrice: newItem.quantity * newItem.unitPrice,
+    };
+
+    setItems([...items, item]);
 
     setNewItem({
       date: "",
@@ -68,6 +75,10 @@ export default function Products() {
       totalPrice: 0,
     });
   };
+
+  // useEffect(() => {
+  //   console.log(items);
+  // }, [items]);
 
   return (
     <section className="z-10 w-full max-w-7xl text-sm lg:flex flex-col gap-10 py-10 px-10">

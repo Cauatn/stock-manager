@@ -37,6 +37,7 @@ import {
 } from "@/components/ui/table";
 
 import { columns } from "./columns";
+import { Product } from "@/types/types";
 
 const data: Product[] = [
   {
@@ -105,15 +106,6 @@ const data: Product[] = [
   },
 ];
 
-export type Product = {
-  id: string;
-  image: React.ReactNode;
-  amount: number;
-  status: "pending" | "processing" | "success" | "failed";
-  productName: string;
-  price: GLfloat;
-};
-
 export function DataTable() {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -143,7 +135,7 @@ export function DataTable() {
   });
 
   return (
-    <div className="w-full">
+    <div className="w-full ">
       <div className="flex items-center py-4">
         <Input
           placeholder="Filtre pelos nomes..."
@@ -182,9 +174,9 @@ export function DataTable() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="rounded-md border">
+      <div className="rounded-sm border">
         <Table>
-          <TableHeader>
+          <TableHeader className="bg-slate-100">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {

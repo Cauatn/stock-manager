@@ -7,6 +7,7 @@ import {
   LucideIcon,
   Package,
   Truck,
+  MonitorUp,
 } from "lucide-react";
 
 type Submenu = {
@@ -60,30 +61,37 @@ export function getMenuList(pathname: string): Group[] {
           submenus: [],
         },
         {
+          href: "/stock/toRemove",
+          label: "Retirada de produtos",
+          active: pathname.includes("/stock/toRemove"),
+          icon: MonitorUp,
+          submenus: [],
+        },
+        {
           href: "/stock/newProduct",
           label: "Adicionar novo produto",
           active: pathname.includes("/stock/newProduct"),
           icon: Bookmark,
           submenus: [],
         },
-        {
-          href: "",
-          label: "Teste",
-          active: pathname.includes("/teste"),
-          icon: SquarePen,
-          submenus: [
-            {
-              href: "/teste",
-              label: "Todos os funcionários",
-              active: pathname === "/teste",
-            },
-            {
-              href: "/teste",
-              label: "Alguma açao",
-              active: pathname === "/teste",
-            },
-          ],
-        },
+        // {
+        //   href: "",
+        //   label: "Teste",
+        //   active: pathname.includes("/teste"),
+        //   icon: SquarePen,
+        //   submenus: [
+        //     {
+        //       href: "/teste",
+        //       label: "Todos os funcionários",
+        //       active: pathname === "/teste",
+        //     },
+        //     {
+        //       href: "/teste",
+        //       label: "Alguma açao",
+        //       active: pathname === "/teste",
+        //     },
+        //   ],
+        // },
       ],
     },
     {

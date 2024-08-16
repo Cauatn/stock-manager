@@ -23,6 +23,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Search } from "lucide-react";
+import { Label } from "@/components/ui/label";
+import { getDate } from "@/hooks/date";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -41,6 +43,7 @@ export function DataTable<TData, TValue>({
   );
   const [rowSelection, setRowSelection] = useState({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [date, setDate] = useState(getDate());
 
   const table = useReactTable({
     data,
@@ -67,23 +70,42 @@ export function DataTable<TData, TValue>({
   return (
     <div className="w-full">
       <div className="inline-flex items-center justify-between w-full">
-        <div className="flex items-center py-4 relative">
-          <Input
-            placeholder="Filtre os items..."
-            value={
-              (table.getColumn("productName")?.getFilterValue() as string) ?? ""
-            }
-            onChange={(event) =>
-              table.getColumn("productName")?.setFilterValue(event.target.value)
-            }
-            className="max-w-sm"
-          />
-          <Search className="absolute text-slate-400 right-3" />
+        <div className="inline-flex space-x-2">
+          <div className="flex items-center py-4 relative">
+            <Input
+              placeholder="Filtre os items..."
+              value={
+                (table.getColumn("productName")?.getFilterValue() as string) ??
+                ""
+              }
+              onChange={(event) =>
+                table
+                  .getColumn("productName")
+                  ?.setFilterValue(event.target.value)
+              }
+              className="max-w-sm"
+            />
+            <Search className="absolute text-slate-400 right-3" />
+          </div>
         </div>
-        <div className="space-x-2">
-          <Button variant="outline">Anterior</Button>
+        <div className="inline-flex space-x-2 items-center">
+          <div>
+            <Label htmlFor="employee">Funcionário</Label>
+            <Input id="employee" name="employee" type="string" required />
+          </div>
+          <div className="">
+            <Label htmlFor="date">Data</Label>
+            <Input
+              id="date"
+              name="date"
+              type="date"
+              defaultValue={date}
+              onChange={(e) => setDate(e.target.value)}
+              required
+            />
+          </div>
           <Link href="/stock/toRemove/info">
-            <Button className="bg-blue-600">Proximo</Button>
+            <Button className="bg-blue-600 mt-5">Proximo</Button>
           </Link>
         </div>
       </div>

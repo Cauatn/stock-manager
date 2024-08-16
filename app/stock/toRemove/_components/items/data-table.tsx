@@ -17,21 +17,28 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { Search } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
-  data: TData[];
+  DATA: TData[];
 }
 
 export function DataTable<TData, TValue>({
   columns,
-  data,
+  DATA,
 }: DataTableProps<TData, TValue>) {
+  const [data, setData] = useState(
+    DATA.map((item) => ({
+      ...item,
+      selectedQuantity: 0,
+    }))
+  );
   const [rowSelection, setRowSelection] = useState({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
@@ -46,12 +53,21 @@ export function DataTable<TData, TValue>({
       rowSelection,
       columnFilters,
     },
+    meta: {
+      updateData: (rowIndex: number, columnId: number, value: number) => {
+        setData((prev) =>
+          prev.map((row, index) =>
+            index === rowIndex ? { ...prev[rowIndex], [columnId]: value } : row
+          )
+        );
+      },
+    },
   });
 
   return (
     <div className="w-full">
       <div className="inline-flex items-center justify-between w-full">
-        <div className="flex items-center py-4">
+        <div className="flex items-center py-4 relative">
           <Input
             placeholder="Filtre os items..."
             value={
@@ -62,6 +78,7 @@ export function DataTable<TData, TValue>({
             }
             className="max-w-sm"
           />
+          <Search className="absolute text-slate-400 right-3" />
         </div>
         <div className="space-x-2">
           <Button variant="outline">Anterior</Button>
@@ -97,14 +114,16 @@ export function DataTable<TData, TValue>({
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                 >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
+                  {row.getVisibleCells().map((cell) => {
+                    return (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    );
+                  })}
                 </TableRow>
               ))
             ) : (
@@ -119,10 +138,6 @@ export function DataTable<TData, TValue>({
             )}
           </TableBody>
         </Table>
-      </div>
-      <div className="flex-1 text-sm text-muted-foreground">
-        {table.getFilteredSelectedRowModel().rows.length} of{" "}
-        {table.getFilteredRowModel().rows.length} row(s) selected.
       </div>
     </div>
   );

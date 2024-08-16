@@ -1,30 +1,10 @@
 "use client";
 
-import { Checkbox } from "@/components/ui/checkbox";
 import { Product } from "@/types/types";
 import { ColumnDef } from "@tanstack/react-table";
+import AmountCell from "../amountCell";
 
 export const columns: ColumnDef<Product>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-  },
   {
     accessorKey: "image",
     header: "Imagem",
@@ -49,26 +29,16 @@ export const columns: ColumnDef<Product>[] = [
       return <div className="font-medium">{amount}</div>;
     },
   },
-  // {
-  //   accessorKey: "price",
-  //   header: () => <div className="">Preço Unitario</div>,
-  //   cell: ({ row }) => {
-  //     const amount = parseFloat(row.getValue("price"));
-
-  //     // Format the amount as a dollar amount
-  //     const formatted = new Intl.NumberFormat("pt-BR", {
-  //       style: "currency",
-  //       currency: "BRL",
-  //     }).format(amount);
-
-  //     return <div className="font-medium">{formatted}</div>;
-  //   },
-  // },
   {
     accessorKey: "status",
-    header: () => <div className="text-right">Status</div>,
+    header: () => <div className="text-left">Status</div>,
     cell: ({ row }) => (
-      <div className="capitalize text-right">{row.getValue("status")}</div>
+      <div className="capitalize text-left">{row.getValue("status")}</div>
     ),
+  },
+  {
+    accessorKey: "selectedQuantity",
+    header: () => <div className="">Retirada</div>,
+    cell: AmountCell,
   },
 ];

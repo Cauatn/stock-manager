@@ -2,6 +2,8 @@ import { Product } from "@/types/types";
 import { columns } from "./_components/items/columns";
 import { DataTable } from "./_components/items/data-table";
 import { Badge } from "@/components/ui/badge";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 
 const img = <img src="https://via.placeholder.com/150" />;
 
@@ -85,7 +87,17 @@ export default async function ToRemove() {
           Selecione os items que irão compor a saída
         </p>
       </header>
-      <DataTable columns={columns} data={data} />
+      <div className="grid grid-cols-2 gap-4">
+        <div className="">
+          <Label htmlFor="date">Data</Label>
+          <Input id="date" name="date" type="date" required />
+        </div>
+        <div>
+          <Label htmlFor="employee">Funcionário</Label>
+          <Input id="employee" name="employee" type="string" required />
+        </div>
+      </div>
+      <DataTable columns={columns} DATA={data} />
     </>
   );
 }

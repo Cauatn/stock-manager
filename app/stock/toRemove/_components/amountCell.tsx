@@ -1,14 +1,35 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-const AmountComponent = () => {
-  const [amount, setAmount] = useState(0);
+type AmountComponentProps = {
+  getValue: () => number;
+  row: any;
+  column: any;
+  table: any;
+};
+
+const AmountComponent = ({
+  getValue,
+  row,
+  column,
+  table,
+}: AmountComponentProps) => {
+  const initialValue = getValue();
+  const [amount, setAmount] = useState(initialValue);
+
+  const updateAmout = () => {
+    table.options.meta?.updateData(row.index, column.id, amount);
+  };
+
+  useEffect(() => {
+    updateAmout();
+  }, [amount]);
 
   const incrementAmount = () => {
     setAmount(amount + 1);
   };
 
   const decrementAmount = () => {
-    if (amount == 0) return;
+    if (amount === 0) return;
     setAmount(amount - 1);
   };
 
@@ -25,4 +46,4 @@ const AmountComponent = () => {
   );
 };
 
-export default AmountComponent;
+export default React.memo(AmountComponent);

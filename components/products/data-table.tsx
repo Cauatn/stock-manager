@@ -38,31 +38,46 @@ import {
 
 import { columns } from "./columns";
 import { Product } from "@/types/types";
+import { Badge } from "../ui/badge";
+
+const img = <img src="https://via.placeholder.com/150" />;
 
 const data: Product[] = [
   {
     id: "m5gr84i9",
-    image: <img src="https://via.placeholder.com/150" />,
+    image: img,
     amount: 316,
-    status: "success",
+    status: (
+      <Badge variant={"default"} className="bg-emerald-600 rounded-md">
+        Disponível
+      </Badge>
+    ),
     productName: "Teste 1",
     price: 350.0,
   },
   {
-    id: "3u1reuv4",
-    image: <img src="https://via.placeholder.com/150" />,
-    amount: 242,
-    status: "success",
-    productName: "Teste 2",
-    price: 200.0,
-  },
-  {
     id: "derv1ws0",
-    image: <img src="https://via.placeholder.com/150" />,
+    image: img,
     amount: 837,
-    status: "processing",
+    status: (
+      <Badge variant={"default"} className="bg-yellow-600 rounded-md">
+        Poucas unidades
+      </Badge>
+    ),
     productName: "Graxa de pneu",
     price: 120.0,
+  },
+  {
+    id: "5kma53ae",
+    image: img,
+    amount: 874,
+    status: (
+      <Badge variant={"default"} className="bg-red-600 rounded-md">
+        Fora de Estoque
+      </Badge>
+    ),
+    productName: "macaco",
+    price: 150.0,
   },
   {
     id: "5kma53ae",

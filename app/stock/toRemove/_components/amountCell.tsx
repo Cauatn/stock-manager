@@ -2,11 +2,16 @@ import React, { useEffect, useState } from "react";
 
 type AmountComponentProps = {
   getValue: () => number;
-  row: any;
-  column: any;
-  table: any;
+  row: { index: number };
+  column: { id: string };
+  table: {
+    options: {
+      meta?: {
+        updateData: (rowIndex: number, columnId: string, value: number) => void;
+      };
+    };
+  };
 };
-
 const AmountComponent = ({
   getValue,
   row,

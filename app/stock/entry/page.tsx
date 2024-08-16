@@ -4,6 +4,7 @@ import { FormEvent, useState } from "react";
 
 import ItemsList from "./_components/ItemsList";
 import ItemForm from "./_components/ItemForm";
+import { getDate } from "@/hooks/date";
 
 export type Item = {
   date: string;
@@ -16,10 +17,7 @@ export type Item = {
 };
 
 export default function Products() {
-  var curr = new Date();
-  curr.setDate(curr.getDate());
-  let date = curr.toISOString().substring(0, 10);
-
+  const date = getDate();
   const [items, setItems] = useState<Item[]>([]);
 
   const [newItem, setNewItem] = useState<Item>({

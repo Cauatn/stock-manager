@@ -1,9 +1,15 @@
+"use client";
+
 import { Product } from "@/types/types";
 import { columns } from "./_components/items/columns";
 import { DataTable } from "./_components/items/data-table";
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import StatusBadge from "@/components/status-badge";
+import { get } from "http";
+import { getDate } from "@/hooks/date";
+import { useState } from "react";
 
 const img = <img src="https://via.placeholder.com/150" />;
 
@@ -12,11 +18,7 @@ const data: Product[] = [
     id: "m5gr84i9",
     image: img,
     amount: 316,
-    status: (
-      <Badge variant={"default"} className="bg-emerald-600 rounded-md">
-        Disponível
-      </Badge>
-    ),
+    status: <StatusBadge type="available" />,
     productName: "Teste 1",
     price: 350.0,
   },
@@ -24,11 +26,7 @@ const data: Product[] = [
     id: "derv1ws0",
     image: img,
     amount: 837,
-    status: (
-      <Badge variant={"default"} className="bg-yellow-600 rounded-md">
-        Poucas unidades
-      </Badge>
-    ),
+    status: <StatusBadge type="few" />,
     productName: "Graxa de pneu",
     price: 120.0,
   },
@@ -36,11 +34,7 @@ const data: Product[] = [
     id: "5kma53ae",
     image: img,
     amount: 874,
-    status: (
-      <Badge variant={"default"} className="bg-red-600 rounded-md">
-        Fora de Estoque
-      </Badge>
-    ),
+    status: <StatusBadge type="unavailable" />,
     productName: "macaco",
     price: 150.0,
   },
@@ -78,7 +72,7 @@ const data: Product[] = [
   },
 ];
 
-export default async function ToRemove() {
+export default function ToRemove() {
   return (
     <>
       <header>
@@ -87,16 +81,6 @@ export default async function ToRemove() {
           Selecione os items que irão compor a saída
         </p>
       </header>
-      <div className="grid grid-cols-2 gap-4">
-        <div className="">
-          <Label htmlFor="date">Data</Label>
-          <Input id="date" name="date" type="date" required />
-        </div>
-        <div>
-          <Label htmlFor="employee">Funcionário</Label>
-          <Input id="employee" name="employee" type="string" required />
-        </div>
-      </div>
       <DataTable columns={columns} DATA={data} />
     </>
   );

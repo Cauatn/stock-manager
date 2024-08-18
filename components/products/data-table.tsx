@@ -39,74 +39,38 @@ import {
 import { columns } from "./columns";
 import { Product } from "@/types/types";
 
-const data: Product[] = [
-  {
-    id: "m5gr84i9",
-    image: <img src="https://via.placeholder.com/150" />,
-    amount: 316,
-    status: "success",
-    productName: "Teste 1",
-    price: 350.0,
-  },
-  {
-    id: "3u1reuv4",
-    image: <img src="https://via.placeholder.com/150" />,
-    amount: 242,
-    status: "success",
-    productName: "Teste 2",
-    price: 200.0,
-  },
-  {
-    id: "derv1ws0",
-    image: <img src="https://via.placeholder.com/150" />,
-    amount: 837,
-    status: "processing",
-    productName: "Graxa de pneu",
-    price: 120.0,
-  },
-  {
-    id: "5kma53ae",
-    image: <img src="https://via.placeholder.com/150" />,
-    amount: 874,
-    status: "success",
-    productName: "macaco",
-    price: 150.0,
-  },
-  {
-    id: "bhqecj4p",
-    image: <img src="https://via.placeholder.com/150" />,
-    amount: 721,
-    status: "failed",
-    productName: "Pé de cabra",
-    price: 150.0,
-  },
-  {
-    id: "bhqecj4p",
-    image: <img src="https://via.placeholder.com/150" />,
-    amount: 721,
-    status: "failed",
-    productName: "Alicate",
-    price: 150.0,
-  },
-  {
-    id: "bhqecj4p",
-    image: <img src="https://via.placeholder.com/150" />,
-    amount: 721,
-    status: "failed",
-    productName: "banana",
-    price: 150.0,
-  },
-  {
-    id: "bhqecj4p",
-    image: <img src="https://via.placeholder.com/150" />,
-    amount: 721,
-    status: "failed",
-    productName: "Zarabatana",
-    price: 150.0,
-  },
-];
+const img = <img src="https://via.placeholder.com/150" />;
 
+async function fetchData(): Promise<Product[]> {
+  const response = await fetch("http://localhost:8080/products");
+  const result = await response.json();
+
+  // Ensure result.data is an array
+  const products = Array.isArray(result.data) ? result.data : [];
+
+  return products.map((product: any) => ({
+    id: product.product_id,
+    image: img,
+    amount: product.product_quantity_in_stock,
+    status: product.product_quantity_in_stock > 0 ? "In Stock" : "Out of Stock",
+    productName: product.product_name,
+    price: 0.0,
+  }));
+}
 export function DataTable() {
+  const [data, setData] = React.useState<Product[]>([]);
+
+  React.useEffect(() => {
+    const fetchDataAsync = async () => {
+      const rawData = await fetchData();
+      setData(rawData);
+    };
+
+    fetchDataAsync();
+  }, []);
+
+  React.useEffect(() => {}, [data]);
+
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []

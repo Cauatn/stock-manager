@@ -50,33 +50,7 @@ export default function Products() {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    const item = {
-      date: newItem.date,
-      name: newItem.name,
-      id: newItem.id,
-      supplier: newItem.supplier,
-      quantity: newItem.quantity,
-      unitPrice: newItem.unitPrice,
-      totalPrice: newItem.quantity * newItem.unitPrice,
-    };
-
-    setItems([...items, item]);
-
-    setNewItem({
-      date: "",
-      name: "",
-      id: "",
-      supplier: "",
-      quantity: 0,
-      unitPrice: 0,
-      totalPrice: 0,
-    });
   };
-
-  // useEffect(() => {
-  //   console.log(items);
-  // }, [items]);
 
   return (
     <section className="z-10 w-full max-w-7xl text-sm lg:flex flex-col gap-10 py-10 px-10">

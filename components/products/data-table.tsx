@@ -38,21 +38,30 @@ import {
 
 import { columns } from "./columns";
 import { Product } from "@/types/types";
+import { HOST_URL } from "@/lib/globals";
+import StatusBadge from "../status-badge";
 
 const img = <img src="https://via.placeholder.com/150" />;
 
 async function fetchData(): Promise<Product[]> {
-  const response = await fetch("http://localhost:8080/products");
+  const response = await fetch(`${HOST_URL}/products`);
   const result = await response.json();
 
-  // Ensure result.data is an array
   const products = Array.isArray(result.data) ? result.data : [];
 
   return products.map((product: any) => ({
     id: product.product_id,
     image: img,
     amount: product.product_quantity_in_stock,
-    status: product.product_quantity_in_stock > 0 ? "In Stock" : "Out of Stock",
+    status:
+      product.product_max_stock / 2 <= product.product_quantity_in_stock ? (
+        <StatusBadge type="available" />
+      ) : (product.product_max_stock / 2) * 0.3 <=
+        product.product_quantity_in_stock ? (
+        <StatusBadge type="few" />
+      ) : (
+        <StatusBadge type="unavailable" />
+      ),
     productName: product.product_name,
     price: 0.0,
   }));

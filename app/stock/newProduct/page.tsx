@@ -9,6 +9,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { HOST_URL } from "@/lib/globals";
 import { PlusCircle } from "lucide-react";
 
 export default function NewProduct() {
@@ -21,7 +22,7 @@ export default function NewProduct() {
     let product_max_stock = form.get("max-stock");
     let product_tag = form.get("tag");
 
-    fetch("http://localhost:8080/products", {
+    fetch(`${HOST_URL}/products`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -30,6 +31,8 @@ export default function NewProduct() {
         product_name: product_name,
         product_description: product_note,
         product_quantity_in_stock: Number(product_min_stock),
+        product_max_stock: Number(product_max_stock),
+        product_min_stock: Number(product_min_stock),
       }),
     })
       .then((response) => {

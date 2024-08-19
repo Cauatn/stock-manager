@@ -25,6 +25,37 @@ import Link from "next/link";
 import { Search } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { getDate } from "@/hooks/date";
+import StatusBadge from "@/components/status-badge";
+
+import { Product } from "@/types/types";
+import { HOST_URL } from "@/lib/globals";
+
+const img = <img src="https://via.placeholder.com/150" />;
+
+async function fetchData(): Promise<any[]> {
+  const response = await fetch(`${HOST_URL}/products`);
+  const result = await response.json();
+
+  const products = Array.isArray(result.data) ? result.data : [];
+
+  return products.map((product: any) => ({
+    id: product.product_id,
+    image: img,
+    amount: product.product_quantity_in_stock,
+    status:
+      product.product_max_stock / 2 <= product.product_quantity_in_stock ? (
+        <StatusBadge type="available" />
+      ) : (product.product_max_stock / 2) * 0.3 <=
+        product.product_quantity_in_stock ? (
+        <StatusBadge type="few" />
+      ) : (
+        <StatusBadge type="unavailable" />
+      ),
+    productName: product.product_name,
+    price: 0.0,
+    selectedQuantity: 0,
+  }));
+}
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -35,12 +66,21 @@ export function DataTable<TData, TValue>({
   columns,
   DATA,
 }: DataTableProps<TData, TValue>) {
-  const [data, setData] = useState(
-    DATA.map((item) => ({
-      ...item,
-      selectedQuantity: 0,
-    }))
-  );
+  const [data, setData] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchDataAsync = async () => {
+      const rawData = await fetchData();
+      setData(rawData);
+    };
+
+    fetchDataAsync();
+  }, []);
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
+
   const [rowSelection, setRowSelection] = useState({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [date, setDate] = useState(getDate());

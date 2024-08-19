@@ -104,26 +104,37 @@ function Item({
     setCurrentValue(e.target.value);
   };
 
-  useEffect(() => {
-    console.log("currentValue", currentValue);
-  }, [currentValue]);
-
   async function handleSubmit(form: FormData) {
-    let product_name = form.get(title);
+    let product_inst = form.get(title);
+
+    const bd = {
+      product_id: product.data.product_id,
+      product_name:
+        title === "Nome do produto" ? product_inst : product.data.product_name,
+      product_quantity_in_stock:
+        title === "Quantidade em estoque"
+          ? Number(product_inst)
+          : Number(product.data.product_quantity_in_stock),
+      product_description:
+        title === "Descrição" ? product_inst : product.data.product_description,
+      product_max_stock:
+        title === "Quantidade máxima"
+          ? Number(product_inst)
+          : Number(product.data.product_max_stock),
+      product_min_stock:
+        title === "Quantidade mínima"
+          ? Number(product_inst)
+          : Number(product.data.product_min_stock),
+    };
+
+    console.log(bd);
 
     fetch(`${HOST_URL}/products/${params}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        product_id: product.data.product_id,
-        product_name: "Hammer",
-        product_description: "A big steel hammer",
-        product_quantity_in_stock: 120,
-        product_max_stock: 420,
-        product_min_stock: 25,
-      }),
+      body: JSON.stringify(bd),
     })
       .then((response) => {
         if (!response.ok) {

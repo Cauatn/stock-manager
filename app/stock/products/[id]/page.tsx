@@ -21,13 +21,26 @@ export default function Page({ params }: any) {
   const [error, setError] = useState(null);
 
   const items = [
-    { title: "Nome do produto", value: product.data.product_name },
+    {
+      title: "Nome do produto",
+      value: product.data.product_name,
+      id: "product_name",
+    },
     {
       title: "Quantidade em estoque",
       value: product.data.product_quantity_in_stock,
+      id: "product_quantity_in_stock",
     },
-    { title: "Quantidade máxima", value: product.data.product_max_stock },
-    { title: "Quantidade mínima", value: product.data.product_min_stock },
+    {
+      title: "Quantidade máxima",
+      value: product.data.product_max_stock,
+      id: "product_max_stock",
+    },
+    {
+      title: "Quantidade mínima",
+      value: product.data.product_min_stock,
+      id: "product_min_stock",
+    },
   ];
 
   useEffect(() => {
@@ -77,6 +90,7 @@ export default function Page({ params }: any) {
                 value={item.value}
                 params={params?.id}
                 product={product}
+                id={item.id}
               />
             ))}
           </div>
@@ -90,12 +104,13 @@ function Item({
   title,
   value,
   params,
-  product,
+  id,
 }: {
   title: string;
   value: string;
   params: string;
   product: any;
+  id: string;
 }) {
   const [isEditing, setIsEditing] = useState(false);
   const [currentValue, setCurrentValue] = useState(value);
@@ -107,34 +122,19 @@ function Item({
   async function handleSubmit(form: FormData) {
     let product_inst = form.get(title);
 
-    const bd = {
-      product_id: product.data.product_id,
-      product_name:
-        title === "Nome do produto" ? product_inst : product.data.product_name,
-      product_quantity_in_stock:
-        title === "Quantidade em estoque"
-          ? Number(product_inst)
-          : Number(product.data.product_quantity_in_stock),
-      product_description:
-        title === "Descrição" ? product_inst : product.data.product_description,
-      product_max_stock:
-        title === "Quantidade máxima"
-          ? Number(product_inst)
-          : Number(product.data.product_max_stock),
-      product_min_stock:
-        title === "Quantidade mínima"
-          ? Number(product_inst)
-          : Number(product.data.product_min_stock),
-    };
-
-    console.log(bd);
+    console.log(product_inst);
 
     fetch(`${HOST_URL}/products/${params}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(bd),
+      body: JSON.stringify({
+        [id]:
+          product_inst == "Nome do produto"
+            ? product_inst
+            : Number(product_inst),
+      }),
     })
       .then((response) => {
         if (!response.ok) {
